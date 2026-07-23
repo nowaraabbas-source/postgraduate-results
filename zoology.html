@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نتيجة قسم علم الحيوان - الدكتوراة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@500;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+/* ==========================================================================
+   منطقة التخصيص — عدّل هنا فقط وما تلمسش باقي الكود
+   ========================================================================== */
+:root{
+  --ink:        #0F3D3E;   /* اللون الأساسي الغامق (الهيدر) */
+  --sage:       #4C7A6D;   /* لون ثانوي (نصوص وحدود) */
+  --parchment:  #F6F1E4;   /* لون الخلفية */
+  --gold:       #B08D57;   /* لون التمييز */
+  --charcoal:   #22201B;   /* لون النص الأساسي */
+  --pass:       #2F6B4F;   /* لون شارة "ناجح" */
+  --fail:       #A23B3B;   /* لون شارة "راسب" */
+  --line:       #D9CFB8;   /* لون الحدود الرفيعة */
+}
+</style>
+<style>
+  /* لو عندك شعار جاهز، بدّل هذا السطر:
+     من:  display:flex;   →   إلى: display:none;   (في .logo-fallback)
+     ومن: display:none;   →   إلى: display:block;  (في .logo-image) */
+ 
+.logo-fallback{ display:none; }
+.logo-image{ display:block; }
+  *{box-sizing:border-box;}
+  body{ margin:0; background:var(--parchment); color:var(--charcoal); font-family:'Tajawal', sans-serif; min-height:100vh; }
+  header{ background:var(--ink); color:var(--parchment); padding:36px 24px 44px; text-align:center; position:relative; }
+  .back-link{
+    position:absolute; top:18px; right:20px;
+    color:var(--parchment); opacity:.8; font-size:13px; text-decoration:none;
+  }
+  .back-link:hover{ opacity:1; }
+  .logo-fallback{
+    width:78px;height:78px; margin:0 auto 14px; border-radius:50%;
+    border:3px solid var(--gold); align-items:center; justify-content:center; position:relative;
+  }
+  .logo-fallback::before{ content:""; position:absolute; inset:6px; border:1px dashed var(--gold); border-radius:50%; }
+  .logo-fallback span{ font-family:'Markazi Text', serif; font-weight:700; font-size:26px; color:var(--gold); }
+  .logo-image{ width:78px; height:78px; margin:0 auto 14px; border-radius:50%; object-fit:cover; border:3px solid var(--gold); }
+  header h1{ font-family:'Markazi Text', serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; }
+  header p{ margin:0; color:var(--gold); font-size:15px; letter-spacing:1px; }
+  main{ max-width:900px; margin:-24px auto 60px; padding:0 20px; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:6px; box-shadow:0 12px 30px -18px rgba(15,61,62,0.35); padding:26px; }
+  .updated-line{ font-size:12.5px; color:var(--sage); margin-bottom:14px; min-height:16px; }
+  .search-box{ width:100%; padding:12px 14px; border:1px solid var(--line); border-radius:5px; font-family:'Tajawal', sans-serif; font-size:15px; margin-bottom:16px; }
+  .search-box:focus{ outline:2px solid var(--gold); border-color:var(--gold); }
+  table{ width:100%; border-collapse:collapse; font-size:14px; }
+  thead th{ background:var(--ink); color:var(--parchment); padding:11px 8px; text-align:right; font-weight:700; }
+  tbody td{ padding:10px 8px; border-bottom:1px solid var(--line); }
+  tbody tr:hover{ background:#FAF7EE; }
+  .badge{ display:inline-block; padding:3px 12px; border-radius:20px; font-size:12.5px; font-weight:700; color:#fff; }
+  .badge.pass{ background:var(--pass); }
+  .badge.fail{ background:var(--fail); }
+  .badge.other{ background:var(--sage); }
+  .empty-state{ text-align:center; padding:40px 10px; color:var(--sage); font-size:14px; }
+  .error-state{ text-align:center; padding:30px 10px; color:var(--fail); font-size:13.5px; line-height:1.8; }
+  footer{ text-align:center; color:var(--sage); font-size:12.5px; padding:24px 20px 30px; }
+</style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="index.html">→ الرئيسية</a>
+  <div class="logo-fallback"><span>OMU</span></div>
+  <img class="logo-image" src="assets/logo.png" alt="شعار الجامعة">
+  <h1>نتيجة قسم علم الحيوان — الدكتوراة</h1>
+  <p>كلية العلوم · مكتب الدراسات العليا</p>
+</header>
+
+<main>
+  <div class="card">
+    <div class="updated-line" id="updated-line"></div>
+    <input class="search-box" id="search-box" placeholder="ابحث بالاسم أو رقم القيد..." oninput="renderTable()">
+    <div id="table-wrap"><div class="empty-state">جاري تحميل النتيجة...</div></div>
+  </div>
+</main>
+
+<footer>البيانات معروضة للاطلاع فقط، ولا يمكن للزائر تعديلها أو رفع ملفات من عنده.</footer>
+
+<script>
+/* ==========================================================================
+   إعدادات المسؤول — غيّر مسار ملف البيانات هنا فقط
+   ========================================================================== */
+const SOURCE = "data/zoology.csv";   // مسار ملف الـ CSV، أو رابط Google Sheets المنشور كـ CSV
+const UPDATED_NOTE = "";              // اختياري، مثال: "آخر تحديث: 2026-07-20"
+/* ========================================================================== */
+
+let rows = [];
+
+async function loadData(){
+  const wrap = document.getElementById('table-wrap');
+  if(UPDATED_NOTE) document.getElementById('updated-line').textContent = UPDATED_NOTE;
+  try{
+    const res = await fetch(SOURCE, {cache:"no-store"});
+    if(!res.ok) throw new Error("fetch failed");
+    const csvText = await res.text();
+    const parsed = XLSX.read(csvText, {type:"string"});
+    const sheet = parsed.Sheets[parsed.SheetNames[0]];
+    rows = XLSX.utils.sheet_to_json(sheet, {defval:""});
+    renderTable();
+  }catch(err){
+    wrap.innerHTML = '<div class="error-state">تعذر تحميل ملف النتيجة حاليًا.<br>تأكد أن ملف "'+SOURCE+'" مرفوع فعليًا في نفس مكان هذه الصفحة على الاستضافة.</div>';
+  }
+}
+
+function detectStatus(value){
+  const v = String(value||'').trim();
+  if(/ناجح|نجاح|pass/i.test(v)) return 'pass';
+  if(/راسب|رسوب|fail/i.test(v)) return 'fail';
+  return 'other';
+}
+
+function renderTable(){
+  const wrap = document.getElementById('table-wrap');
+  const query = (document.getElementById('search-box').value||'').trim().toLowerCase();
+
+  if(!rows.length){
+    wrap.innerHTML = '<div class="empty-state">لا توجد بيانات معروضة حاليًا</div>';
+    return;
+  }
+  const cols = Object.keys(rows[0]);
+  const filtered = query ? rows.filter(r => cols.some(c => String(r[c]).toLowerCase().includes(query))) : rows;
+
+  if(!filtered.length){
+    wrap.innerHTML = '<div class="empty-state">لا توجد نتائج مطابقة لبحثك</div>';
+    return;
+  }
+
+  let html = '<table><thead><tr>';
+  cols.forEach(c => html += `<th>${c}</th>`);
+  html += '</tr></thead><tbody>';
+  filtered.forEach(r => {
+    html += '<tr>';
+    cols.forEach(c => {
+      const val = r[c];
+      if(/نتيج|تقدير|حال/i.test(c)){
+        html += `<td><span class="badge ${detectStatus(val)}">${val}</span></td>`;
+      } else {
+        html += `<td>${val}</td>`;
+      }
+    });
+    html += '</tr>';
+  });
+  html += '</tbody></table>';
+  wrap.innerHTML = html;
+}
+
+loadData();
+</script>
+</body>
+</html>

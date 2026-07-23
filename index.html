@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>نتيجة الدراسات العليا - مرحلة الدكتوراة</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@500;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<style>
+/* ==========================================================================
+   منطقة التخصيص — عدّل هنا فقط وما تلمسش باقي الكود
+   ========================================================================== */
+:root{
+  /* الألوان: غيّر القيم دي بس عشان تغيّر مظهر الصفحة كلها */
+  --ink:        #0F3D3E;   /* اللون الأساسي الغامق (الهيدر) */
+  --sage:       #4C7A6D;   /* لون ثانوي (نصوص وحدود) */
+  --parchment:  #F6F1E4;   /* لون الخلفية */
+  --gold:       #B08D57;   /* لون التمييز (الخط تحت العنوان) */
+  --charcoal:   #22201B;   /* لون النص الأساسي */
+}
+</style>
+<style>
+  /* لو عندك شعار جاهز، بدّل هذا السطر:
+     من:  display:none;
+     إلى: display:flex;
+     وامسح كلمة "logo-fallback" من الـ HTML تحت */
+
+
+  .logo-fallback{ display:none; }
+.logo-image{ display:block; }
+
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--parchment);
+    color:var(--charcoal);
+    font-family:'Tajawal', sans-serif;
+    min-height:100vh;
+  }
+  header{
+    background:var(--ink);
+    color:var(--parchment);
+    padding:44px 24px 50px;
+    text-align:center;
+  }
+  .logo-fallback{
+    width:82px;height:82px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    border:3px solid var(--gold);
+    align-items:center;justify-content:center;
+    position:relative;
+  }
+  .logo-fallback::before{
+    content:"";
+    position:absolute;
+    inset:6px;
+    border:1px dashed var(--gold);
+    border-radius:50%;
+  }
+  .logo-fallback span{
+    font-family:'Markazi Text', serif;
+    font-weight:700;
+    font-size:26px;
+    color:var(--gold);
+  }
+  .logo-image{
+    width:82px;height:82px;
+    margin:0 auto 16px;
+    border-radius:50%;
+    object-fit:cover;
+    border:3px solid var(--gold);
+  }
+  header h1{
+    font-family:'Markazi Text', serif;
+    font-weight:700;
+    font-size:clamp(26px,4vw,38px);
+    margin:0 0 6px;
+  }
+  header p{
+    margin:0;
+    color:var(--gold);
+    font-size:15px;
+    letter-spacing:1px;
+  }
+  main{
+    max-width:760px;
+    margin:-28px auto 60px;
+    padding:0 20px;
+  }
+  .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:20px;
+  }
+  @media (max-width:600px){
+    .grid{ grid-template-columns:1fr; }
+  }
+  .dept-card{
+    background:#fff;
+    border:1px solid #D9CFB8;
+    border-radius:8px;
+    box-shadow:0 12px 30px -18px rgba(15,61,62,0.35);
+    padding:30px 22px;
+    text-align:center;
+    text-decoration:none;
+    color:var(--charcoal);
+    transition:transform .15s, box-shadow .15s;
+    display:block;
+  }
+  .dept-card:hover{
+    transform:translateY(-4px);
+    box-shadow:0 16px 34px -16px rgba(15,61,62,0.45);
+  }
+  .dept-card .icon{
+    font-size:34px;
+    margin-bottom:12px;
+  }
+  .dept-card h2{
+    font-family:'Markazi Text', serif;
+    font-size:22px;
+    margin:0 0 8px;
+    color:var(--ink);
+  }
+  .dept-card p{
+    margin:0;
+    font-size:13.5px;
+    color:var(--sage);
+  }
+  footer{
+    text-align:center;
+    color:var(--sage);
+    font-size:12.5px;
+    padding:0 20px 30px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo-fallback"><span>OMU</span></div>
+  <img class="logo-image" src="assets/logo.png" alt="شعار الجامعة">
+  <h1>نتيجة الدراسات العليا — مرحلة الدكتوراة</h1>
+  <p>كلية العلوم · مكتب الدراسات العليا</p>
+</header>
+
+<main>
+  <div class="grid">
+    <a class="dept-card" href="zoology.html">
+      <div class="icon">🦎</div>
+      <h2>قسم علم الحيوان</h2>
+      <p>عرض النتيجة والبحث برقم القيد أو الاسم</p>
+    </a>
+    <a class="dept-card" href="botany.html">
+      <div class="icon">🌿</div>
+      <h2>قسم علم النبات</h2>
+      <p>عرض النتيجة والبحث برقم القيد أو الاسم</p>
+    </a>
+  </div>
+</main>
+
+<footer>
+  كلية العلوم — جامعة عمر المختار
+</footer>
+
+</body>
+</html>
