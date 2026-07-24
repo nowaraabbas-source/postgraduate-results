@@ -5,74 +5,70 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>نتيجة قسم علم الحيوان - الدكتوراة</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@500;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Markazi+Text:wght@600;700&family=Tajawal:wght@400;500;700;900&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 /* ==========================================================================
    منطقة التخصيص — عدّل هنا فقط وما تلمسش باقي الكود
    ========================================================================== */
 :root{
-  --ink:        #0F3D3E;
-  --sage:       #4C7A6D;
-  --parchment:  #F6F1E4;
-  --gold:       #B08D57;
-  --charcoal:   #22201B;
-  --line:       #D9CFB8;
+  --ink:    #1B3E6E;   /* اللون الأساسي (الهيدر والجدول) */
+  --accent: #2F5BA3;   /* لون الأزرار والشارات */
+  --slate:  #64748B;   /* لون النصوص الثانوية */
+  --bg:     #F3F6FB;   /* لون خلفية الصفحة */
+  --line:   #DDE5F0;   /* لون الحدود الرفيعة */
 }
 </style>
 <style>
-  .logo-fallback{ display:flex; }
-  .logo-image{ display:none; }
+  .logo-fallback{ display:none; }
+  .logo-image{ display:block; }
 
   *{box-sizing:border-box;}
-  body{ margin:0; background:var(--parchment); color:var(--charcoal); font-family:'Tajawal', sans-serif; min-height:100vh; }
-  header{ background:var(--ink); color:var(--parchment); padding:36px 24px 44px; text-align:center; position:relative; }
-  .back-link{ position:absolute; top:18px; right:20px; color:var(--parchment); opacity:.8; font-size:13px; text-decoration:none; }
-  .back-link:hover{ opacity:1; }
-  .logo-fallback{ width:78px;height:78px; margin:0 auto 14px; border-radius:50%; border:3px solid var(--gold); align-items:center; justify-content:center; position:relative; }
-  .logo-fallback::before{ content:""; position:absolute; inset:6px; border:1px dashed var(--gold); border-radius:50%; }
-  .logo-fallback span{ font-family:'Markazi Text', serif; font-weight:700; font-size:26px; color:var(--gold); }
-  .logo-image{ width:78px; height:78px; margin:0 auto 14px; border-radius:50%; object-fit:cover; border:3px solid var(--gold); }
-  header h1{ font-family:'Markazi Text', serif; font-weight:700; font-size:clamp(24px,4vw,34px); margin:0 0 6px; }
-  header p{ margin:0; color:var(--gold); font-size:15px; letter-spacing:1px; }
+  body{ margin:0; background:var(--bg); color:#222; font-family:'Tajawal', sans-serif; min-height:100vh; }
 
-  main{ max-width:640px; margin:-24px auto 60px; padding:0 20px; }
-  .card{ background:#fff; border:1px solid var(--line); border-radius:6px; box-shadow:0 12px 30px -18px rgba(15,61,62,0.35); padding:26px; }
+  header{ background:#fff; text-align:center; padding:30px 24px 26px; border-bottom:3px solid var(--ink); position:relative; }
+  .back-link{ position:absolute; top:18px; right:20px; color:var(--ink); opacity:.7; font-size:13px; text-decoration:none; }
+  .back-link:hover{ opacity:1; }
+  .logo-image{ height:80px; width:auto; margin:0 auto 12px; object-fit:contain; }
+  header h1{ font-family:'Markazi Text', serif; font-weight:700; font-size:clamp(24px,4vw,32px); margin:0 0 6px; color:var(--ink); }
+  header p{ margin:0; color:var(--slate); font-size:14px; }
+
+  main{ max-width:600px; margin:-20px auto 60px; padding:0 20px; }
+  .card{ background:#fff; border:1px solid var(--line); border-radius:10px; box-shadow:0 10px 26px -16px rgba(27,62,110,0.30); padding:26px; }
 
   .search-row{ display:flex; gap:10px; }
-  .search-box{ flex:1; padding:13px 14px; border:1px solid var(--line); border-radius:5px; font-family:'Tajawal', sans-serif; font-size:16px; text-align:center; letter-spacing:1px; }
-  .search-box:focus{ outline:2px solid var(--gold); border-color:var(--gold); }
-  .search-btn{ background:var(--ink); color:#fff; border:none; padding:0 26px; border-radius:5px; font-family:'Tajawal', sans-serif; font-weight:700; font-size:15px; cursor:pointer; }
-  .search-btn:hover{ background:var(--sage); }
+  .search-box{ flex:1; padding:13px 14px; border:1px solid var(--line); border-radius:8px; font-family:'Tajawal', sans-serif; font-size:16px; text-align:center; }
+  .search-box:focus{ outline:2px solid var(--accent); border-color:var(--accent); }
+  .search-btn{ background:var(--ink); color:#fff; border:none; padding:0 26px; border-radius:8px; font-weight:700; font-size:15px; cursor:pointer; }
+  .search-btn:hover{ background:var(--accent); }
 
   #result-area{ margin-top:20px; }
-  .hint{ text-align:center; padding:30px 10px; color:var(--sage); font-size:14px; }
-  .error-state{ text-align:center; padding:24px 10px; color:#A23B3B; font-size:14px; }
+  .hint{ text-align:center; padding:28px 10px; color:var(--slate); font-size:14px; }
+  .error-state{ text-align:center; padding:22px 10px; color:#B3413F; font-size:13.5px; }
 
-  .student-name{ font-family:'Markazi Text', serif; font-size:22px; color:var(--ink); text-align:center; margin-bottom:4px; }
-  .student-id{ text-align:center; color:var(--sage); font-size:13px; margin-bottom:18px; }
+  .student-name{ font-family:'Markazi Text', serif; font-weight:700; font-size:22px; color:var(--ink); text-align:center; margin-bottom:4px; }
+  .student-id{ text-align:center; color:var(--slate); font-size:13px; margin-bottom:18px; }
 
-  table{ width:100%; border-collapse:collapse; font-size:14px; margin-bottom:18px; }
-  thead th{ background:var(--ink); color:var(--parchment); padding:10px 8px; text-align:right; font-weight:700; }
+  table{ width:100%; border-collapse:collapse; font-size:14px; margin-bottom:18px; border-radius:8px; overflow:hidden; }
+  thead th{ background:var(--ink); color:#fff; padding:10px 8px; text-align:right; font-weight:700; }
   tbody td{ padding:9px 8px; border-bottom:1px solid var(--line); }
-  tbody tr:nth-child(even){ background:#FAF7EE; }
+  tbody tr:nth-child(even){ background:#F7F9FC; }
 
-  .summary{ border-top:2px solid var(--gold); padding-top:14px; display:flex; flex-wrap:wrap; gap:10px 22px; justify-content:center; }
+  .summary{ border-top:2px solid var(--line); padding-top:14px; display:flex; flex-wrap:wrap; gap:10px 22px; justify-content:center; }
   .summary-item{ text-align:center; }
-  .summary-item .label{ font-size:12px; color:var(--sage); margin-bottom:2px; }
+  .summary-item .label{ font-size:12px; color:var(--slate); margin-bottom:2px; }
   .summary-item .value{ font-size:15px; font-weight:700; color:var(--ink); }
-  .summary-item.rating .value{ display:inline-block; background:var(--gold); color:#fff; padding:3px 14px; border-radius:20px; font-size:13.5px; }
+  .summary-item.rating .value{ display:inline-block; background:var(--accent); color:#fff; padding:3px 14px; border-radius:20px; font-size:13.5px; }
 
-  .notes-line{ text-align:center; margin-top:14px; font-size:12.5px; color:var(--sage); }
+  .notes-line{ text-align:center; margin-top:14px; font-size:12.5px; color:var(--slate); }
 
-  footer{ text-align:center; color:var(--sage); font-size:12.5px; padding:24px 20px 30px; }
+  footer{ text-align:center; color:var(--slate); font-size:12.5px; padding:24px 20px 30px; }
 </style>
 </head>
 <body>
 
 <header>
   <a class="back-link" href="index.html">→ الرئيسية</a>
-  <div class="logo-fallback"><span>OMU</span></div>
   <img class="logo-image" src="assets/logo.png" alt="شعار الجامعة">
   <h1>نتيجة قسم علم الحيوان — الدكتوراة</h1>
   <p>كلية العلوم · مكتب الدراسات العليا</p>
@@ -165,7 +161,14 @@ function renderStudent(row){
     html += `<div class="summary-item"><div class="label">الوحدات الدراسية</div><div class="value">${row["الوحدات الدراسية"]}</div></div>`;
   }
   if(String(row["المعدل الفصلي"]||"").trim()){
-    html += `<div class="summary-item"><div class="label">المعدل الفصلي</div><div class="value">${row["المعدل الفصلي"]}</div></div>`;
+    const gpaRaw = String(row["المعدل الفصلي"]).trim();
+    const gpaNum = parseFloat(gpaRaw.replace(',', '.'));
+    let gpaDisplay = gpaRaw;
+    if(!isNaN(gpaNum)){
+      const pct = gpaNum <= 1 ? gpaNum * 100 : gpaNum;
+      gpaDisplay = pct.toFixed(1).replace(/\.0$/, '') + '%';
+    }
+    html += `<div class="summary-item"><div class="label">المعدل الفصلي</div><div class="value">${gpaDisplay}</div></div>`;
   }
   if(String(row["التقدير العام"]||"").trim()){
     html += `<div class="summary-item rating"><div class="label">التقدير العام</div><div class="value">${row["التقدير العام"]}</div></div>`;
