@@ -162,7 +162,11 @@ function renderStudent(row){
   }
   if(String(row["المعدل الفصلي"]||"").trim()){
     const gpaRaw = String(row["المعدل الفصلي"]).trim();
-    const gpaNum = parseFloat(gpaRaw.replace(',', '.'));
+    const normalized = gpaRaw
+      .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d))
+      .replace(/[^0-9.,]/g, '')
+      .replace(',', '.');
+    const gpaNum = parseFloat(normalized);
     let gpaDisplay = gpaRaw;
     if(!isNaN(gpaNum)){
       const pct = gpaNum <= 1 ? gpaNum * 100 : gpaNum;
